@@ -151,38 +151,38 @@
 			  jpa:
 			    hibernate:
 			      naming:
-			        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+			      implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 			        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 			```
 			<br>
 		*	**`application.yml`에 db 연결 정보 추가.**  
 			```yml
 			spring:
-				datasource:
-				driver-class-name: com.mysql.cj.jdbc.Driver
-				url: jdbc:mysql://localhost:(DB포트번호)/(데이터베이스명)?characterEncoding=UTF-8
-				username: 계정이름
-				password: 비밀번호
+			  datasource:
+			  driver-class-name: com.mysql.cj.jdbc.Driver
+			  url: jdbc:mysql://localhost:(DB포트번호)/(데이터베이스명)?characterEncoding=UTF-8
+			  username: 계정이름
+			  password: 비밀번호
 			```
 			포트번호, 데이터베이스명, 계정이름, 비밀번호  수정하기.<br><br>
 
 		*	**`application.yml`에 MyBatis가 `xml` 파일을 읽을 경로 추가**  
 			```yml
 			mybatis:
-				mapper-locations: mappers/*Mapper.xml
+			  mapper-locations: mappers/*Mapper.xml
 			```
 			MyBatis가 `xml` 파일을 읽는 경로는 `src/main/resources/mappers/...Mapper.xml`가 될 것임.<br><br>
 
 		*	**`application.yml`에 JPA 설정 추가**
 			```yml
 			spring:
-			    jpa:
-			    show-sql: true
-			    hibernate:
-			      ddl-auto: none
+			  jpa:
+			  show-sql: true
+			  hibernate:
+			    ddl-auto: none
 			    properties:
 			      hibernate:
-				    format_sql: true
+			        format_sql: true
 			```
 			
 	*	DB 예외처리  
