@@ -65,7 +65,7 @@
 	*	XML 템플릿 추가  
 		-
 		Window > Preferences > XML > XML Files > Editor > Templates에서 New 메뉴 클릭  
-		이름, 설명, 반드시 New XML로 선택할 것  
+		반드시 New XML로 선택할 것  
 		pattern에 다음 내용 복붙하기  
 
 		```xml
@@ -99,18 +99,19 @@
 			implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 			```
 			수행된 쿼리를 콘솔로 확인할 수 있음.  
+			서버 자원을 잡아먹으니 개발단계에서만 사용.  
 			<br>
 		*	**타임리프 레이아웃 의존성 추가**  
 			```groovy
 			implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 			```
-			`common.html`에 공통내용을 만들어놓으면 다른 html에서 이를 모듈처럼 갖다붙일 수 있게 하는 라이브러리. 사용법을 찾아보자.  
+			공통 레이아웃에 재사용할 마크업을 만들어놓고 바뀌는 내용은 별도의 html로 만들어 갖다붙일 수 있게 하는 라이브러리. 사용법을 찾아보자.  
 	*	DB 연결 설정
 		-
 		yml 파일?  
 		
 		>`.yml`은 `.properties`에서 중복되는 부분을 제거한 문법을 사용한다.  
-		>이 문법은 **띄어쓰기에 굉장히 예민**하므로 복붙하고나서 손으로 직접 탭, 공백을 다시 써주는 것이 좋다.  
+		>이 문법은 **띄어쓰기에 굉장히 예민**하므로 복붙하고나서 불필요한 띄어쓰기가 없는지 확인하는 것이 좋다.  
 		>`yml`파일에 설정을 추가할 때는 중복을 제거하고 **기존 설정과 겹치는 상위 요소** 아래에 넣어줘야 한다.
 		>```yml
 		>#들여쓰기는 공백 2번
@@ -134,6 +135,8 @@
 		>```
 		>
 		>`application.properties` 파일을 없애고 `application.yml`를 만들어서 사용하면 된다.  
+		`.properties` <=> `.yml` 자동 변환해주는 사이트  
+		http://mageddo.com/tools/yaml-converter
 		
 		<br>
 
@@ -143,7 +146,7 @@
 			설정 전: `@Column(name = "loginId")` > `SELECT U.login_id FROM user;`  
 			설정 전: `@Column(name = "loginId")` > `SELECT U.loginId FROM user;`  
 			
-			=> DB 컬럼명에 따라 필요 없을 수도 있음.  
+			=> DB에서 컬럼명을 Snake Case로 만들었으면 필요 없음.  
 
 			`application.yml`
 			```yml
@@ -151,7 +154,7 @@
 			  jpa:
 			    hibernate:
 			      naming:
-			      implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+			        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 			        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 			```
 			<br>
@@ -159,31 +162,36 @@
 			```yml
 			spring:
 			  datasource:
-			  driver-class-name: com.mysql.cj.jdbc.Driver
-			  url: jdbc:mysql://localhost:(DB포트번호)/(데이터베이스명)?characterEncoding=UTF-8
-			  username: 계정이름
-			  password: 비밀번호
+			    driver-class-name: com.mysql.cj.jdbc.Driver
+			    url: jdbc:mysql://localhost:(DB포트번호)/(데이터베이스명)?characterEncoding=UTF-8
+			    username: 계정이름
+			    password: 비밀번호
 			```
-			포트번호, 데이터베이스명, 계정이름, 비밀번호  수정하기.<br><br>
+			DBMS의 포트번호, 데이터베이스명, 계정이름, 비밀번호  채워넣기.<br><br>
 
-		*	**`application.yml`에 MyBatis가 `xml` 파일을 읽을 경로 추가**  
+		*	**`application.yml`에 MyBatis가 `xml` 파일을 읽는 경로 설정**  
 			```yml
 			mybatis:
 			  mapper-locations: mappers/*Mapper.xml
 			```
-			MyBatis가 `xml` 파일을 읽는 경로는 `src/main/resources/mappers/...Mapper.xml`가 될 것임.<br><br>
+			MyBatis가 `xml` 파일을 읽는 경로는 `src/main/resources/mappers/...Mapper.xml`가 될 것이다.<br><br>
 
 		*	**`application.yml`에 JPA 설정 추가**
 			```yml
 			spring:
 			  jpa:
-			  show-sql: true
-			  hibernate:
-			    ddl-auto: none
+			    show-sql: true
+			    hibernate:
+			      ddl-auto: none
 			    properties:
 			      hibernate:
 			        format_sql: true
 			```
+			`spring.jpa.show-sql: true` => 쿼리문 콘솔에 출력  
+			`spring.jpa.hibernate.ddl-auto: none` => 테이블 자동생성 끄기  
+			`spring.jpa.properties.hibernate.format_sql: true` => 콘솔에 쿼리문을 보기 좋게 출력해줌.  
+			
+
 			
 	*	DB 예외처리  
 		-
